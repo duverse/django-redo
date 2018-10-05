@@ -153,3 +153,25 @@ And 4 workers for the 4 threads:
     python manage.py redo --thread 2 --queue default
     python manage.py redo --thread 3 --queue default
     python manage.py redo --thread 4 --queue default
+    
+    
+Making simpler with the supervisor
+--------------------------------------
+
+You can manage workers using supervisor tool. It's an easy way to add it to a system
+startup and get a really useful managing tool. Here is an example of configuration
+for 10 threads:
+
+
+**/etc/supervisor/conf.d/redo.conf**
+
+    [program:queue_worker]
+    numprocs = 10
+    numprocs_start = 1
+    process_name = redo_worker_%(process_num)s
+    command=/project/.env/bin/python /project/manage.py redo --thread %(process_num)s --queue default
+    autostart=true
+    autorestart=true
+    user=www-data
+    stdout_logfile=/project/redo.worker.log
+    stderr_logfile=/project/redo.worker.err.log
