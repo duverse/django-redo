@@ -117,12 +117,13 @@ class RedisQueue(object):
         :param channel:
         :param conf:
         """
-        self.redis = self._redis_connect(conf)
-
+        self._database = conf
         self._channel_name = channel
         self._pubsub = None
         self._thread = 1
         self._last_thread = None
+
+        self.redis = self._redis_connect(conf)
 
     def __call__(self, thread):
         """
@@ -130,6 +131,8 @@ class RedisQueue(object):
         :param thread:
         :return:
         """
+        if 1 > thread > int(self._database.get('THREADS', 1)):
+            raise ValueError('Invalid number of thread were provided.')
         self._thread = thread
         return self
 
@@ -197,7 +200,7 @@ class RedisQueue(object):
         Returns next thread to publish
         :return:
         """
-        ths = Settings.get('QUEUE_THREADS', 1)
+        ths = int(self._database.get('THREADS', 1))
         if ths == 1:
             return 1
         if self._last_thread is None:
@@ -237,7 +240,7 @@ class RedisQueue(object):
             return redis.Redis(
                 db=conf.get('DB', 0),
                 password=conf.get('PASSWORD'),
-                unix_socket_path=conf['unix_socket_path']
+                unix_socket_path=conf['USOCK']
             )
         return redis.Redis(
             db=conf.get('DB', 0),

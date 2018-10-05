@@ -5,7 +5,7 @@ class Settings(object):
     """
     Module settings helper.
     """
-    prefix = 'PEPPER_'
+    prefix = 'REDO_'
 
     @staticmethod
     def get(key, default=None):
