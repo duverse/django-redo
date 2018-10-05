@@ -27,7 +27,7 @@ Then we need to run worker, which will execute scheduled tasks.
 
     python manage.py redo
     
-Django Pepper completely compatible with the **@staticmethods** and **functions**. It's
+Django ReDo completely compatible with the **@staticmethods** and **functions**. It's
 useful, when you need to group some async tasks into class.
 
 
