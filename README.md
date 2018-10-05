@@ -7,6 +7,12 @@ Easy use!
 tasks execution functionality. Library requires configured Redis server.
 
 
+Installation
+------------
+
+    pip install Django-ReDo
+
+
 **Usage**
 
     from django_redo import task
